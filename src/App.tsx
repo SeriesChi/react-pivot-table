@@ -16,8 +16,8 @@ export interface PivotTableDataProps {
 const pivotPresets = {
     cols: ["pizza"],
     rows: ["employee"],
-    rendererName: "Table",
-    aggregatorName: "Sum",
+    rendererName: "Table", // if not given will take table as default
+    aggregatorName: "Sum", // if not given will take count as default
     vals: ["total"],
 };
 
@@ -36,7 +36,9 @@ function App() {
         }
     }, []);
 
+    // create Plotly renderers via dependency injection
     const PlotlyRenderers = createPlotlyRenderers(Plot);
+
     return (
         <div>
             <PivotTableUI
@@ -45,7 +47,7 @@ function App() {
                 onChange={(e: any) => {
                     setTableData(e);
                 }}
-                renderers={Object.assign({}, TableRenderers, PlotlyRenderers)}
+                renderers={{ ...TableRenderers, ...PlotlyRenderers }}
                 {...pivotConfig}
                 {...tableData}
             />
